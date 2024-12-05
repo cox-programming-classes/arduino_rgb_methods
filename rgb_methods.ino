@@ -3,6 +3,7 @@
 #define BLUE_PIN 4
 
 #define BUTTON_PIN 5
+#define BUTTON2_PIN 7
 
 void setup() 
 {
@@ -10,6 +11,7 @@ void setup()
   pinMode(GREEN_PIN, OUTPUT);
   pinMode(BLUE_PIN, OUTPUT);
   pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(BUTTON2_PIN, INPUT_PULLUP);
 }
 
 #define LED_COUNT 3
@@ -47,16 +49,38 @@ void cycleLEDs()
   updateLEDs();
   delay(1000);
 
+  if(turnOffLEDsOn2Pressed()) return; // end the method here.
+
   setLEDState(false, true, false);
   updateLEDs();
   delay(1000);
+
+  if(turnOffLEDsOn2Pressed()) return;
 
   setLEDState(false, false, true);
   updateLEDs();
   delay(1000);
 
+  if(turnOffLEDsOn2Pressed()) return;
+
+
   setLEDState(false, false, false);
   updateLEDs();
+}
+
+bool turnOffLEDsOn2Pressed()
+{
+  bool is2Pressed =
+    digitalRead(BUTTON2_PIN) == LOW;
+
+  if(is2Pressed)
+  {
+    setLEDState(false, false, false);
+    updateLEDs();
+    return true;
+  }
+
+  return false;
 }
 
 void loop() 
